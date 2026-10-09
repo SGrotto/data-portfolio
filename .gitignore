@@ -1,0 +1,23 @@
+# Raw data: not committed (large, can be downloaded again)
+data/raw/*
+!data/raw/.gitkeep
+On branch main
+
+No commits yet
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        .gitignore
+        README.md
+        data/clean/.gitkeep
+        data/raw/.gitkeep
+        docs/.gitkeep
+        python/.gitkeep
+        sql/.gitkeep
+
+nothing added to commit but untracked files present (use "git add" to track)
+
+
+# Clean data: not committed (recreated by running the scripts)
+data/clean/*
+!data/clean/.gitkeep
