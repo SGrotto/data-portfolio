@@ -13,8 +13,11 @@ The author, Sébastien Grotto, is an economist who spent seven years cleaning, s
 
 ## Data source
 
-- Inside Airbnb, Paris listings: https://insideairbnb.com/get-the-data/
-- Snapshot date: to be completed after download
+- Inside Airbnb, Paris listings (`listings.csv.gz`)
+- Snapshot date: 2026-09-16
+- Download URL: https://data.insideairbnb.com/france/ile-de-france/paris/2026-09-16/data/listings.csv.gz
+- Licence: Creative Commons Attribution 4.0 (CC BY 4.0)
+- To reproduce: download the file from the URL above and place it in `data/raw/`
 
 ## Tools
 
