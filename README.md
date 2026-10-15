@@ -18,6 +18,7 @@ The author, Sébastien Grotto, is an economist who spent seven years cleaning, s
 - Download URL: https://data.insideairbnb.com/france/ile-de-france/paris/2026-09-16/data/listings.csv.gz
 - Licence: Creative Commons Attribution 4.0 (CC BY 4.0)
 - To reproduce: download the file from the URL above and place it in `data/raw/`
+- Note: prices in the raw data contain the $ symbol but are effectively recorded in euros (source: row 49 of Inside Airbnb Data Dictionary: https://docs.google.com/spreadsheets/d/1iWCNJcSutYqpULSQHlNyGInUvHg2BoUGoNRIGa6Szc4/edit?gid=1322284596#gid=1322284596)
 
 ## Tools
 
