@@ -4,9 +4,9 @@
 -- Converting prices to a number. -- 
 ------------------------------------
 
---  1. First check: currency. Prices contain '$', which is not expected for listings in Paris. However, the information in row 49 of the Data Dictionary of the Paris listing dataset website (https://docs.google.com/spreadsheets/d/1iWCNJcSutYqpULSQHlNyGInUvHg2BoUGoNRIGa6Szc4/edit?gid=1322284596#gid=1322284596) indicates the price is in local currency and the $ is to be ignored.
---  2. For the price to be converted to a number, only commas between integers and decimals must remain: we then remove commas included in integers (",") and the US dollars symbol.
---  3. We use CAST for the conversion - in order to assess its effectiveness, we compare the total number of rows of non-missing prices with that of the converted prices: the numbers are identical, which validates the conversion and guarantees that no non-missing price became NULL.
+--  1. First check: currency. Prices contain '$', which is not expected for listings in Paris. However, the information in row 49 of the Data Dictionary of the Paris listing dataset website (https://docs.google.com/spreadsheets/d/1iWCNJcSutYqpULSQHlNyGInUvHg2BoUGoNRIGa6Szc4/edit?gid=1322284596#gid=1322284596) indicates the price is in local currency, i.e. euros, and the $ is to be ignored.
+--  2. For the price to be converted to a number, only the decimal separator (".", a dot) must remain: we then remove the thousands separator (",", a comma) and the US dollars symbol.
+--  3. We use CAST for the conversion - in order to assess its effectiveness, we compare the total number of rows of non-missing prices with that of the converted prices: the two numbers are identical (43,537), which validates the conversion and guarantees that no non-missing price became NULL.
 
 
 ------------------------
@@ -46,7 +46,8 @@
         LIMIT 10;
     
 --  Preliminary observations : 
-    --  (i) the average (337€) is relatively high compare to the median (218€) because some listings have very high values.
-    --  (ii) the minimum price is relatively low (about 10€ a night).
-    --  (iii) however, further investigation is needed before calling these errors: low price can be shared rooms in hostels, and high prices luxury and large apartments.
+    -- (i) The first observation is that 44% of listings have no pric (43,537 priced listings out of 77,149)
+    -- (ii) the average (337€) is relatively high compare to the median (218€) because some listings have very high values. For example, the highest price observed is 100,666€.
+    -- (iii) the minimum price is relatively low (10.38€ a night).
+    -- (iv) however, further investigation is needed before calling these errors: low price can be shared rooms in hostels, and high prices luxury apartments.
 
