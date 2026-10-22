@@ -1,7 +1,15 @@
 -- This query reads the Paris Airbnb listings and summary review datasets to assess the reasons prices are missing 
 
--- Assumption: unpriced listings are inactive. Inactive means likely no reviews.
--- Task 1: are unreviewed listings also unpriced?
+-- Question: why are 44% of prices missing?
+-- Hypothesis: those listings are inactive.
+-- Problem: activity isn’t a column in the data, so we can’t observe it directly.
+-- Proxy: reviews. A listing that gets reviewed is being booked, so reviews stand in for activity.
+
+-- Question 1: are unreviewed listings also unpriced?
+-- Results:
+-- Inactivity, measured as having no review at all, explains missing prices only weakly.
+-- Unreviewed listings are unpriced slightly more often: 52% against 42% for reviewed ones.
+-- "Any review ever" is a crude proxy: a listing reviewed in 2019 may be inactive today. Recent reviews are a better measure (query 2).
 
 -- New tool: cross-tabulation
 WITH 
@@ -35,16 +43,8 @@ SELECT
 FROM categories
 GROUP BY price_status, review_status;
 
--- Question: are unreviewed listings also unpriced?
--- Results:
--- The absence of review can't be the only reason prices are missing. 
--- Our evidence lies in the fact that listings without reviews are more often unpriced (52% against 42% for listings with review(s))
--- It shows the link between reviews and unpriced listings exist, but it is weak.
--- Looking at the presence or absence of review can be limited, since a listing might have received a review in 2019 
--- but has no price at the time data on prices were collected, say in September 2026. Dates of the last reviews received should be explored.
 
-
--- Question: are unpriced listings dormant?
+-- Question 2: are unpriced listings dormant?
 -- Results:
 -- The data supports the idea that unpriced listings are dormants.
 -- Listings with no price received much less recent reviews (past 12 months) than with a price: 38% vs 85%.
@@ -52,7 +52,6 @@ GROUP BY price_status, review_status;
 -- that these were fully booked or closed at scrape time, but must be checked against the calendar file. 
 
 -- New tool: dates 
-
 WITH 
 reviews_per_listing AS (
     SELECT
