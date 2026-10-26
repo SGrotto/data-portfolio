@@ -16,7 +16,8 @@ COPY (
             ELSE CAST(regexp_extract(bathrooms_text, '^[0-9.]+') AS DOUBLE)
         END AS n_bathrooms,
         CAST(REPLACE(REPLACE(price, ',', ''), '$', '') AS DOUBLE) AS price_eur,
-        number_of_reviews_ltm
+        number_of_reviews_ltm,
+        availability_365
     FROM 'data/raw/listings.csv.gz'
 )
 TO 'data/clean/listings_clean.parquet' (FORMAT PARQUET);
