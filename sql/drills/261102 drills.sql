@@ -55,7 +55,7 @@ SELECT
     month(date) AS month,
     COUNT(*) AS n_reviews, 
     COUNT(*)-LAG(COUNT(*)) OVER (ORDER BY month(date)) AS change_vs_prev_month,
-    ROUND(100*(COUNT(*)-(LAG(COUNT(*)) OVER (ORDER BY month(date))))/COUNT(*),1) AS perc_change_vs_prev_month
+    ROUND(100*(COUNT(*)-(LAG(COUNT(*)) OVER (ORDER BY month(date))))/(LAG(COUNT(*)) OVER (ORDER BY month(date))),1) AS perc_change_vs_prev_month
 FROM 'data/raw/reviews.csv'
 WHERE year(date)=2025
 GROUP BY month(date)
@@ -79,3 +79,11 @@ ON l.id = r.listing_id
 GROUP BY l.neighbourhood_cleansed
 ORDER BY share_at_least_1r_2025 DESC;
 -- 10m30: got stuck on conceptualizing the question 
+
+-- Alternative option
+SELECT 
+    neighbourhood_cleansed AS neighbourhood,
+    ROUND(AVG(CASE WHEN id IN (SELECT listing_id FROM 'data/raw/reviews.csv' WHERE year(date)=2025) THEN 1 ELSE 0 END),2) AS share_at_least_1r_2025
+FROM 'data/clean/listings_clean.parquet'
+GROUP BY neighbourhood_cleansed
+ORDER BY share_at_least_1r_2025 DESC;
