@@ -146,7 +146,7 @@ FROM temp;
 
 WITH temp AS (
 SELECT 
-    host_id,
+    host_id
 FROM 'data/raw/listings.csv.gz'
 GROUP BY host_id
 HAVING COUNT(DISTINCT neighbourhood_cleansed) >=3
@@ -160,22 +160,17 @@ FROM temp;
 -- Drill 17 (target 10 min). For each neighbourhood, the median price of priced entire homes, and its difference from the Paris-wide median of priced entire homes. 
 -- Sorted by the difference, highest first.
 
-WITH temp as (
-SELECT 
-    id,
+SELECT
     neighbourhood_cleansed,
-    MEDIAN(price_eur) OVER (PARTITION BY neighbourhood_cleansed) AS median_neighbour_temp,
-    MEDIAN(price_eur) OVER () AS median_paris_temp
+    MEDIAN(price_eur) AS median_nbh,
+    ROUND(MEDIAN(price_eur) - (
+        SELECT MEDIAN(price_eur)
+        FROM 'data/clean/listings_clean.parquet'
+        WHERE room_type = 'Entire home/apt' AND price_eur IS NOT NULL
+    ), 2) AS diff_vs_paris
 FROM 'data/clean/listings_clean.parquet'
 WHERE room_type = 'Entire home/apt' AND price_eur IS NOT NULL
-)
-SELECT 
-    neighbourhood_cleansed,
-    MAX(ROUND(median_neighbour_temp,2)) AS median_neighbour,
-    MAX(ROUND(median_paris_temp,2)) AS median_paris ,
-    ROUND(median_neighbour-median_paris,2) AS diff_median
-FROM temp 
 GROUP BY neighbourhood_cleansed
-ORDER BY diff_median DESC;
+ORDER BY diff_vs_paris DESC;
 
 -- 11min
