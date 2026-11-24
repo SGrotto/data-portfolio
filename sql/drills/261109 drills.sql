@@ -113,3 +113,14 @@ FROM cte1
 GROUP BY neighbourhood_cleansed
 ORDER BY number_listings DESC;
 -- 5min5
+
+SELECT neighbourhood_cleansed,
+       COUNT(*) FILTER (WHERE room_type = 'Entire home/apt' AND price_eur IS NOT NULL)          AS n_entire,
+       MEDIAN(price_eur) FILTER (WHERE room_type = 'Entire home/apt' AND price_eur IS NOT NULL) AS median_price,
+       ROUND(100.0 * (COUNT(*) FILTER (WHERE room_type = 'Entire home/apt')) / COUNT(*),2) AS pct_entire
+FROM 'data/clean/listings_clean.parquet'
+GROUP BY neighbourhood_cleansed
+HAVING COUNT(*) FILTER (WHERE room_type = 'Entire home/apt' AND price_eur IS NOT NULL) >= 1000
+ORDER BY median_price DESC
+LIMIT 5;
+
